@@ -1,0 +1,37 @@
+{
+  "name": "daily-routine-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Student Daily Routine System",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/index.js",
+    "lint": "echo \"Add ESLint later\""
+  },
+  "keywords": [
+    "node",
+    "express",
+    "sequelize",
+    "mysql",
+    "authentication",
+    "jwt",
+    "student-routine"
+  ],
+  "author": "Abhigna Sharma",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.16.2",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

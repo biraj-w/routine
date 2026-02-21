@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Routines</title>
+    <style>
+      /* ================= ROUTINES SECTION ================= */
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        background: #f9faff;
+      }
+
+      #routines-container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      /* Card Style */
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+      }
+
+      /* Form Layout */
+      #routine-form label {
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #555;
+      }
+
+      #routine-form input,
+      #routine-form select {
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #routine-form input:focus,
+      #routine-form select:focus {
+        border-color: #4e73df;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+      }
+
+      /* Button */
+      .primary-btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+      }
+
+      .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(78, 115, 223, 0.3);
+      }
+
+      .form-message {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      /* Table Styling */
+      .table-responsive {
+        overflow: hidden; /* Remove scrollbar */
+        margin-top: 15px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      table thead {
+        background: #f4f6fb;
+      }
+
+      table th,
+      table td {
+        padding: 12px;
+        text-align: left;
+        word-break: break-word;
+      }
+
+      table th {
+        font-weight: 600;
+        color: #555;
+      }
+
+      table tbody tr {
+        border-top: 1px solid #eee;
+        transition: 0.2s;
+      }
+
+      table tbody tr:hover {
+        background: #f9fbff;
+      }
+
+      /* Action Buttons inside table */
+      table button {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-right: 5px;
+        transition: 0.2s;
+      }
+
+      table button:first-child {
+        background: #1cc88a;
+        color: white;
+      }
+
+      table button:last-child {
+        background: #e74a3b;
+        color: white;
+      }
+
+      table button:hover {
+        opacity: 0.85;
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        #routines-container {
+          padding: 15px;
+        }
+
+        table th,
+        table td {
+          padding: 8px;
+          font-size: 13px;
+        }
+
+        .primary-btn {
+          width: 100%;
+        }
+      }
+      /* Form Layout */
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="routines-container">
+      <h2 class="section-title">Routines Management</h2>
+
+      <!-- ================= FORM CARD ================= -->
+      <div id="routine-form" class="card">
+        <h3 id="form-title">Add Routine</h3>
+
+        <!-- Hidden Field for Editing -->
+        <input type="hidden" id="routine-id" />
+        <div class="form-grid">
+          <!-- Student -->
+          <label for="routine-student">Student:</label>
+          <select id="routine-student"></select>
+
+          <!-- Teacher -->
+          <label for="routine-teacher">Teacher:</label>
+          <select id="routine-teacher"></select>
+
+          <!-- Subject -->
+          <label for="routine-subject">Subject:</label>
+          <select id="routine-subject"></select>
+
+          <!-- Day -->
+          <label for="routine-day">Day:</label>
+          <select id="routine-day">
+            <option value="">Select Day</option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+          </select>
+
+          <!-- Start & End Time -->
+          <label for="routine-start">Start Time:</label>
+          <input type="time" id="routine-start" />
+
+          <label for="routine-end">End Time:</label>
+          <input type="time" id="routine-end" />
+        </div>
+        <button class="primary-btn" onclick="submitRoutine()">Submit</button>
+        <p id="routine-msg" class="form-message"></p>
+      </div>
+
+      <!-- ================= TABLE CARD ================= -->
+      <div class="card table-card">
+        <h3>View Routines</h3>
+
+        <div id="routine-filters" style="margin-bottom: 15px">
+          <select id="routine-type">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="class">Class</option>
+          </select>
+          <input
+            type="text"
+            id="routine-id-class"
+            placeholder="Enter ID or Class"
+          />
+          <input
+            type="text"
+            id="routine-day-filter"
+            placeholder="Day (Optional)"
+          />
+          <button class="primary-btn" onclick="viewRoutine()">View</button>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Teacher</th>
+                <th>Subject</th>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="routine-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/routines.js"></script>
+  </body>
+</html>

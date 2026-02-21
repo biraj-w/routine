@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #f4f6fb;
+      }
+
+      /* ================= HEADER ================= */
+      header {
+        height: 70px;
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .logout-btn {
+        padding: 8px 18px;
+        border: none;
+        border-radius: 6px;
+        background: #e74a3b;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .logout-btn:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+      }
+
+      /* ================= LAYOUT ================= */
+      .dashboard-container {
+        display: flex;
+        flex: 1;
+      }
+
+      /* ================= SIDEBAR ================= */
+      aside {
+        width: 240px;
+        background: white;
+        padding: 25px 15px;
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      aside button {
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #f1f3f9;
+        cursor: pointer;
+        font-weight: 500;
+        text-align: left;
+        transition: 0.3s;
+      }
+
+      aside button:hover {
+        background: #4e73df;
+        color: white;
+        transform: translateX(5px);
+      }
+
+      /* ================= MAIN CONTENT ================= */
+      main {
+        flex: 1;
+        padding: 20px 20px;
+      }
+
+      main h1 {
+        margin-bottom: 25px;
+        color: #333;
+      }
+
+      #content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        min-height: 400px;
+      }
+
+      /* ================= FOOTER ================= */
+      footer {
+        height: 50px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #777;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      /* ================= RESPONSIVE ================= */
+      @media (max-width: 900px) {
+        .dashboard-container {
+          flex-direction: column;
+        }
+
+        aside {
+          width: 100%;
+          flex-direction: row;
+          overflow-x: auto;
+        }
+
+        aside button {
+          flex: 1;
+          text-align: center;
+        }
+
+        main {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===== Header ===== -->
+    <header>
+      <div class="logo">🎓 Student Routine System</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </header>
+
+    <!-- ===== Dashboard Layout ===== -->
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside>
+        <button onclick="navigate('students')">Students</button>
+        <button onclick="navigate('teachers')">Teachers</button>
+        <button onclick="navigate('subjects')">Subjects</button>
+        <button onclick="navigate('routines')">Routines</button>
+      </aside>
+
+      <!-- Main Content -->
+      <main>
+        <div id="content"></div>
+      </main>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer>© 2026 Student Routine System | All Rights Reserved</footer>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

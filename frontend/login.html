@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - Student Routine System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+}
+
+/* Main Container */
+.container {
+  display: flex;
+  width: 100%;
+}
+
+/* Left Image Section */
+.left-section {
+  flex: 1;
+  background: url("https://images.unsplash.com/photo-1492724441997-5dc865305da7") no-repeat center center/cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.left-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.left-content {
+  position: relative;
+  text-align: center;
+  padding: 20px;
+}
+
+.left-content h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.left-content p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Right Form Section */
+.right-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fc;
+}
+
+.form-container {
+  width: 380px;
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.form-container input:focus {
+  border-color: #4e73df;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+}
+
+/* Password Container */
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  padding-right: 60px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 13px;
+  color: #4e73df;
+  font-weight: 500;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(135deg, #4e73df, #224abe);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(78, 115, 223, 0.3);
+}
+
+.form-container p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.form-container a {
+  color: #4e73df;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media(max-width: 900px){
+  .container {
+    flex-direction: column;
+  }
+
+  .left-section {
+    height: 250px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Left Side Image -->
+  <div class="left-section">
+    <div class="left-content">
+      <h1>Welcome Back</h1>
+      <p>Login to manage your student routine efficiently.</p>
+    </div>
+  </div>
+
+  <!-- Right Side Form -->
+  <div class="right-section">
+    <div class="form-container">
+      <h2>Login</h2>
+
+      <input type="email" id="email" placeholder="Email" required />
+
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Password" required />
+        <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+      </div>
+
+      <button onclick="login()">Login</button>
+      <p id="login-msg"></p>
+
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+<script src="js/login.js"></script>
+
+</body>
+</html>

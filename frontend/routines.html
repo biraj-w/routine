@@ -2,9 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Routines</title>
+    <title>Routines Management</title>
     <style>
-      /* ================= ROUTINES SECTION ================= */
       body {
         margin: 0;
         padding: 0;
@@ -28,7 +27,6 @@
         margin-bottom: 20px;
       }
 
-      /* Card Style */
       .card {
         background: white;
         padding: 25px;
@@ -37,7 +35,6 @@
         margin-bottom: 20px;
       }
 
-      /* Form Layout */
       #routine-form label {
         display: block;
         margin-top: 10px;
@@ -63,7 +60,6 @@
         box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
       }
 
-      /* Button */
       .primary-btn {
         padding: 10px 18px;
         border: none;
@@ -86,9 +82,8 @@
         color: #555;
       }
 
-      /* Table Styling */
       .table-responsive {
-        overflow: hidden; /* Remove scrollbar */
+        overflow: hidden;
         margin-top: 15px;
       }
 
@@ -123,7 +118,6 @@
         background: #f9fbff;
       }
 
-      /* Action Buttons inside table */
       table button {
         padding: 6px 10px;
         border: none;
@@ -148,7 +142,6 @@
         opacity: 0.85;
       }
 
-      /* Responsive Adjustments */
       @media (max-width: 768px) {
         #routines-container {
           padding: 15px;
@@ -164,7 +157,7 @@
           width: 100%;
         }
       }
-      /* Form Layout */
+
       .form-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -178,25 +171,21 @@
       <h2 class="section-title">Routines Management</h2>
 
       <!-- ================= FORM CARD ================= -->
-      <div id="routine-form" class="card">
+      <form id="routine-form" class="card" onsubmit="submitRoutine(); return false;">
         <h3 id="form-title">Add Routine</h3>
 
-        <!-- Hidden Field for Editing -->
         <input type="hidden" id="routine-id" />
+
         <div class="form-grid">
-          <!-- Student -->
           <label for="routine-student">Student:</label>
           <select id="routine-student"></select>
 
-          <!-- Teacher -->
           <label for="routine-teacher">Teacher:</label>
           <select id="routine-teacher"></select>
 
-          <!-- Subject -->
           <label for="routine-subject">Subject:</label>
           <select id="routine-subject"></select>
 
-          <!-- Day -->
           <label for="routine-day">Day:</label>
           <select id="routine-day">
             <option value="">Select Day</option>
@@ -208,40 +197,20 @@
             <option>Saturday</option>
           </select>
 
-          <!-- Start & End Time -->
           <label for="routine-start">Start Time:</label>
           <input type="time" id="routine-start" />
 
           <label for="routine-end">End Time:</label>
           <input type="time" id="routine-end" />
         </div>
-        <button class="primary-btn" onclick="submitRoutine()">Submit</button>
+
+        <button class="primary-btn">Submit</button>
         <p id="routine-msg" class="form-message"></p>
-      </div>
+      </form>
 
       <!-- ================= TABLE CARD ================= -->
       <div class="card table-card">
         <h3>View Routines</h3>
-
-        <div id="routine-filters" style="margin-bottom: 15px">
-          <select id="routine-type">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="class">Class</option>
-          </select>
-          <input
-            type="text"
-            id="routine-id-class"
-            placeholder="Enter ID or Class"
-          />
-          <input
-            type="text"
-            id="routine-day-filter"
-            placeholder="Day (Optional)"
-          />
-          <button class="primary-btn" onclick="viewRoutine()">View</button>
-        </div>
-
         <div class="table-responsive">
           <table>
             <thead>

@@ -3,206 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <title>Routines Management</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-        font-family: Arial, sans-serif;
-        background: #f9faff;
-      }
-
-      #routines-container {
-        max-width: 1200px;
-        margin: auto;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .section-title {
-        font-size: 24px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 20px;
-      }
-
-      .card {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        margin-bottom: 20px;
-      }
-
-      #routine-form label {
-        display: block;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        font-weight: 500;
-        color: #555;
-      }
-
-      #routine-form input,
-      #routine-form select {
-        padding: 10px 12px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-        transition: 0.3s;
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      #routine-form input:focus,
-      #routine-form select:focus {
-        border-color: #4e73df;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
-      }
-
-      .primary-btn {
-        padding: 10px 18px;
-        border: none;
-        border-radius: 6px;
-        background: linear-gradient(135deg, #4e73df, #224abe);
-        color: white;
-        cursor: pointer;
-        transition: 0.3s;
-        margin-top: 15px;
-      }
-
-      .primary-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(78, 115, 223, 0.3);
-      }
-
-      .form-message {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #555;
-      }
-
-      .table-responsive {
-        overflow: hidden;
-        margin-top: 15px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-      }
-
-      table thead {
-        background: #f4f6fb;
-      }
-
-      table th,
-      table td {
-        padding: 12px;
-        text-align: left;
-        word-break: break-word;
-      }
-
-      table th {
-        font-weight: 600;
-        color: #555;
-      }
-
-      table tbody tr {
-        border-top: 1px solid #eee;
-        transition: 0.2s;
-      }
-
-      table tbody tr:hover {
-        background: #f9fbff;
-      }
-
-      table button {
-        padding: 6px 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 13px;
-        margin-right: 5px;
-        transition: 0.2s;
-      }
-
-      table button:first-child {
-        background: #1cc88a;
-        color: white;
-      }
-
-      table button:last-child {
-        background: #e74a3b;
-        color: white;
-      }
-
-      table button:hover {
-        opacity: 0.85;
-      }
-
-      @media (max-width: 768px) {
-        #routines-container {
-          padding: 15px;
-        }
-
-        table th,
-        table td {
-          padding: 8px;
-          font-size: 13px;
-        }
-
-        .primary-btn {
-          width: 100%;
-        }
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        margin-bottom: 20px;
-      }
-    </style>
+   
+    <link rel="stylesheet" href="css/table.css" />
   </head>
   <body>
     <div id="routines-container">
-      <h2 class="section-title">Routines Management</h2>
+      <!-- ================= HERO SECTION ================= -->
+      <div class="hero-banner">
+        <h2 class="section-title">Routines Management</h2>
+      </div>
 
+      <style>
+        .hero-banner {
+          position: relative;
+          height: 200px; /* change this height as needed */
+          background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1470&q=80")
+            center/cover no-repeat;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* Overlay */
+        .hero-banner::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5); /* semi-transparent dark overlay */
+          z-index: 0;
+        }
+
+        .hero-banner .section-title {
+          position: relative;
+          color: #fff;
+          font-size: 32px;
+          font-weight: 700;
+          z-index: 1; /* above overlay */
+          text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+        }
+      </style>
       <!-- ================= FORM CARD ================= -->
-      <form id="routine-form" class="card" onsubmit="submitRoutine(); return false;">
+      <form
+        id="routine-form"
+        class="card"
+        onsubmit="
+          submitRoutine();
+          return false;
+        "
+      >
         <h3 id="form-title">Add Routine</h3>
 
         <input type="hidden" id="routine-id" />
 
-        <div class="form-grid">
-          <label for="routine-student">Student:</label>
-          <select id="routine-student"></select>
+        <label for="routine-student">Student:</label>
+        <select id="routine-student"></select>
 
-          <label for="routine-teacher">Teacher:</label>
-          <select id="routine-teacher"></select>
+        <label for="routine-teacher">Teacher:</label>
+        <select id="routine-teacher"></select>
 
-          <label for="routine-subject">Subject:</label>
-          <select id="routine-subject"></select>
+        <label for="routine-subject">Subject:</label>
+        <select id="routine-subject"></select>
 
-          <label for="routine-day">Day:</label>
-          <select id="routine-day">
-            <option value="">Select Day</option>
-            <option>Monday</option>
-            <option>Tuesday</option>
-            <option>Wednesday</option>
-            <option>Thursday</option>
-            <option>Friday</option>
-            <option>Saturday</option>
-          </select>
+        <label for="routine-day">Day:</label>
+        <select id="routine-day">
+          <option value="">Select Day</option>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+        </select>
 
-          <label for="routine-start">Start Time:</label>
-          <input type="time" id="routine-start" />
+        <label for="routine-start">Start Time:</label>
+        <input type="time" id="routine-start" />
 
-          <label for="routine-end">End Time:</label>
-          <input type="time" id="routine-end" />
-        </div>
+        <label for="routine-end">End Time:</label>
+        <input type="time" id="routine-end" />
 
         <button class="primary-btn">Submit</button>
         <p id="routine-msg" class="form-message"></p>

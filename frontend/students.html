@@ -1,206 +1,54 @@
-<style>
-/* ================= STUDENTS SECTION ================= */
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Subjects</title>
+    <link rel="stylesheet" href="css/table.css" />
+  </head>
+  <body>
+    <div id="students-container" class="students-wrapper">
+      <div class="hero-banner">
+        <h2 class="section-title">Students Management</h2>
+      </div>
 
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevent full page horizontal scroll */
-  font-family: Arial, sans-serif;
-}
+      <!-- ================= FORM CARD ================= -->
+      <div id="student-form" class="card">
+        <h3 id="form-title">Add Student</h3>
 
-.students-wrapper {
-  display: flex;
-  flex-direction: column;
+        <!-- Hidden Field -->
+        <input type="hidden" id="student-id" />
 
-  max-width: 1200px;
-  margin: auto;
-}
+        <div class="form-grid">
+          <input type="text" id="student-name" placeholder="Student Name" />
+          <input type="text" id="student-roll" placeholder="Roll Number" />
+          <input type="text" id="student-class" placeholder="Class" />
+        </div>
 
-.section-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
+        <button class="primary-btn" onclick="submitStudent()">Submit</button>
+        <p id="student-msg" class="form-message"></p>
+      </div>
 
-/* Card Style */
-.card {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
+      <!-- ================= TABLE CARD ================= -->
+      <div class="card table-card">
+        <h3>All Students</h3>
 
-/* Form Layout */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.card input {
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  transition: 0.3s;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.card input:focus {
-  border-color: #4e73df;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(78,115,223,0.1);
-}
-
-/* Button */
-.primary-btn {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #4e73df, #224abe);
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(78,115,223,0.3);
-}
-
-.form-message {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* ================= TABLE ================= */
-
-.table-card h3 {
-  margin-bottom: 15px;
-}
-
-/* REMOVE SCROLLBAR COMPLETELY */
-.table-responsive {
-  overflow: hidden;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* Prevent overflow */
-}
-
-table thead {
-  background: #f4f6fb;
-}
-
-table th, 
-table td {
-  padding: 12px;
-  text-align: left;
-  word-break: break-word; /* Prevent text overflow */
-}
-
-table th {
-  font-weight: 600;
-  color: #555;
-}
-
-table tbody tr {
-  border-top: 1px solid #eee;
-  transition: 0.2s;
-}
-
-table tbody tr:hover {
-  background: #f9fbff;
-}
-
-/* Action Buttons inside table */
-table button {
-  padding: 6px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-right: 5px;
-  transition: 0.2s;
-}
-
-table button:first-child {
-  background: #1cc88a;
-  color: white;
-}
-
-table button:last-child {
-  background: #e74a3b;
-  color: white;
-}
-
-table button:hover {
-  opacity: 0.85;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .students-wrapper {
-    padding: 15px;
-  }
-
-  table th, table td {
-    padding: 8px;
-    font-size: 13px;
-  }
-
-  .primary-btn {
-    width: 100%;
-  }
-}
-</style>
-
-
-<div id="students-container" class="students-wrapper">
-
-  <h2 class="section-title">Students Management</h2>
-
-  <!-- ================= FORM CARD ================= -->
-  <div id="student-form" class="card">
-
-    <h3 id="form-title">Add Student</h3>
-
-    <!-- Hidden Field -->
-    <input type="hidden" id="student-id">
-
-    <div class="form-grid">
-      <input type="text" id="student-name" placeholder="Student Name">
-      <input type="text" id="student-roll" placeholder="Roll Number">
-      <input type="text" id="student-class" placeholder="Class">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Roll</th>
+                <th>Class</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="student-table-body"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <button class="primary-btn" onclick="submitStudent()">Submit</button>
-    <p id="student-msg" class="form-message"></p>
-  </div>
-
-  <!-- ================= TABLE CARD ================= -->
-  <div class="card table-card">
-    <h3>All Students</h3>
-
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Roll</th>
-            <th>Class</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="student-table-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-</div>
-
-<script src="js/students.js"></script>
+    <script src="js/students.js"></script>
+  </body>
+</html>

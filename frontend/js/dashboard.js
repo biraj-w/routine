@@ -15,16 +15,16 @@ function navigate(section) {
 
   switch(section) {
     case "students":
-      contentDiv.innerHTML = `<iframe src="students.html" frameborder="0" style="width:100%; height:600px;"></iframe>`;
+      contentDiv.innerHTML = `<iframe src="students.html" frameborder="0" style="width:100%; height:100vh;"></iframe>`;
       break;
     case "teachers":
-      contentDiv.innerHTML = `<iframe src="teachers.html" frameborder="0" style="width:100%; height:600px;"></iframe>`;
+      contentDiv.innerHTML = `<iframe src="teachers.html" frameborder="0" style="width:100%; height:100vh;"></iframe>`;
       break;
     case "subjects":
-      contentDiv.innerHTML = `<iframe src="subjects.html" frameborder="0" style="width:100%; height:600px;"></iframe>`;
+      contentDiv.innerHTML = `<iframe src="subjects.html" frameborder="0" style="width:100%; height:100vh;"></iframe>`;
       break;
     case "routines":
-      contentDiv.innerHTML = `<iframe src="routines.html" frameborder="0" style="width:100%; height:600px;"></iframe>`;
+      contentDiv.innerHTML = `<iframe src="routines.html" frameborder="0" style="width:100%; height:100vh;"></iframe>`;
       break;
     default:
       contentDiv.innerHTML = `<p>Select a section from the menu.</p>`;
@@ -43,3 +43,4 @@ function logout() {
 window.onload = () => {
   navigate("students");
 };
+

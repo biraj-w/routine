@@ -63,14 +63,22 @@ function created(res, data, message = "Created successfully") {
 }
 
 /**
- * A paginated list. `meta` is computed here so no controller does pagination
- * arithmetic — a common source of off-by-one bugs on the last page.
+ * A paginated list. The pagination arithmetic is done here so no controller
+ * repeats it — a common source of off-by-one bugs on the last page.
+ *
+ * Any EXTRA keys a caller puts on `meta` are preserved. Destructuring only
+ * page/limit/total and rebuilding the object silently discarded them, which is
+ * how the notifications endpoint's `unreadCount` went missing: the controller
+ * passed it, the envelope dropped it, and the badge showed zero for everyone.
  */
-function paginated(res, items, { page, limit, total }, message = "Fetched successfully") {
+function paginated(res, items, meta, message = "Fetched successfully") {
+  const { page, limit, total, ...extra } = meta;
+
   return success(res, {
     data: items,
     message,
     meta: {
+      ...extra,
       page,
       limit,
       total,

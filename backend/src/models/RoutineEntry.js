@@ -17,19 +17,32 @@
  * The routine service is the single writer of these fields, so they cannot
  * drift from the header.
  *
- * ── The four unique indexes ────────────────────────────────────────────────
- * These are what make conflict detection CORRECT rather than merely likely. The
- * service (services/conflict.service.js) queries first to produce good error
- * messages; the indexes then guarantee that two simultaneous requests cannot
- * both succeed. Every one is `partialFilterExpression: { isDeleted: false }`,
- * which also means soft-deleting an entry immediately frees its slot.
+ * ── Three unique indexes, not four ─────────────────────────────────────────
+ * These make conflict detection CORRECT rather than merely likely. The service
+ * (services/conflict.service.js) queries first to produce good error messages;
+ * the indexes then guarantee two simultaneous requests cannot both succeed.
+ * Each is `partialFilterExpression: { isDeleted: false }`, so soft-deleting an
+ * entry immediately frees its slot, and each is NAMED so
+ * middlewares/errorHandler.js can map an E11000 to the rule that was violated.
  *
- * Each is NAMED, so middlewares/errorHandler.js can map an E11000 back to a
- * human message naming the actual rule violated.
+ * The requirements list FOUR conflict rules — teacher, room, section, and "the
+ * same course must not appear twice in the same slot". Only the first three are
+ * indexable constraints here, and the fourth deliberately is not:
  *
- * R3 vs R4 are not redundant. `groupLabel` distinguishes lab batches: R3 lets
- * G1 and G2 hold different labs in the same slot (a real requirement), and R4
- * is then what stops both batches being given the SAME course simultaneously.
+ *   - Including `groupLabel` in a course-slot index makes it strictly weaker
+ *     than the section index below, so it could never fire independently.
+ *   - EXCLUDING groupLabel makes it forbid a legitimate arrangement: a split
+ *     lab where batches G1 and G2 take the same course in the same slot, in
+ *     different rooms with different instructors. That is normal practice, and
+ *     it is the entire reason `groupLabel` exists.
+ *
+ * So rule 4 is subsumed by rule 3 in this model: two entries sharing an
+ * audience (semester + section + groupLabel) are already rejected whatever
+ * their course. The conflict service still reports it SEPARATELY, because
+ * "CSE301 is already scheduled for section A in this slot" is a far more useful
+ * message than "section A already has a class". Rule 4 is therefore a
+ * message refinement of rule 3, not an independent constraint — see
+ * docs/architecture.md.
  * ──────────────────────────────────────────────────────────────────────────
  */
 const { Schema, model } = require("mongoose");
@@ -138,15 +151,11 @@ routineEntrySchema.index(
 );
 
 // R3 — a section (or lab batch) cannot have two simultaneous classes.
+//      Also subsumes R4: see the header note on why a separate course-slot
+//      constraint cannot be expressed without breaking split labs.
 routineEntrySchema.index(
   { sessionKey: 1, day: 1, timeSlot: 1, semester: 1, section: 1, groupLabel: 1 },
   { unique: true, ...LIVE_ONLY, name: "uniq_section_slot" }
-);
-
-// R4 — the same course cannot appear twice in one slot for one section.
-routineEntrySchema.index(
-  { sessionKey: 1, day: 1, timeSlot: 1, semester: 1, section: 1, course: 1 },
-  { unique: true, ...LIVE_ONLY, name: "uniq_course_slot" }
 );
 
 /* ── Read paths ───────────────────────────────────────────────────────────── */

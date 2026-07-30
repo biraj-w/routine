@@ -12,6 +12,9 @@ const config = require("../config/env");
 
 const router = express.Router();
 
+/* ── Feature routers ─────────────────────────────────────────────────────── */
+router.use("/auth", require("./auth.routes"));
+
 /**
  * GET /api/health
  * Liveness plus database reachability, in the standard envelope.

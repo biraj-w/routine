@@ -32,8 +32,13 @@ const INDEX_MESSAGES = {
   uniq_teacher_slot: "That teacher is already teaching another class in this time slot.",
   uniq_room_slot: "That room is already booked in this time slot.",
   uniq_section_slot: "That section already has a class in this time slot.",
-  uniq_course_slot: "That course is already scheduled for this section in this time slot.",
   uniq_routine_session: "A routine already exists for this department, semester and term.",
+  uniq_semester_instance: "That semester already exists for this department, year and term.",
+  uniq_course_code_per_dept: "A course with that code already exists in this department.",
+  uniq_timeslot_order: "Another time slot already uses that display order.",
+  uniq_timeslot_range: "A time slot with that start and end time already exists.",
+  uniq_teacher_user: "That user account is already linked to another teacher.",
+  uniq_student_user: "That user account is already linked to another student.",
 };
 
 /** Best-effort extraction of the violated index name from a duplicate-key error. */

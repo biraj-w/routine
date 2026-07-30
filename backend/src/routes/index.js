@@ -28,6 +28,15 @@ router.use("/students", require("./student.routes"));
 router.use("/rooms", require("./room.routes"));
 router.use("/timeslots", require("./timeslot.routes"));
 
+// Routine engine
+router.use("/routines", require("./routine.routes"));
+
+// Reporting and cross-cutting
+router.use("/dashboard", require("./dashboard.routes"));
+router.use("/reports", require("./report.routes"));
+router.use("/notifications", require("./notification.routes"));
+router.use("/activity-logs", require("./activity.routes"));
+
 /**
  * GET /api/health
  * Liveness plus database reachability, in the standard envelope.

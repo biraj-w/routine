@@ -9,6 +9,7 @@ const { body } = require("express-validator");
 const {
   requiredString,
   optionalRef,
+  optionalDate,
   existsAndActive,
   paginationQuery,
 } = require("./common.validator");
@@ -33,10 +34,10 @@ const semesterFields = (optional) => {
       .withMessage("At least one section is required"),
     body("sections.*").optional().isString().trim().isLength({ min: 1, max: 5 })
       .withMessage("Each section label must be 1–5 characters"),
-    body("startDate").optional({ nullable: true }).isISO8601()
-      .withMessage("Start date must be a valid date").toDate(),
-    body("endDate").optional({ nullable: true }).isISO8601()
-      .withMessage("End date must be a valid date").toDate(),
+    // optionalDate, not optional({nullable:true}): a blank date input posts "",
+    // which the latter treats as an invalid date rather than as "no date".
+    optionalDate("startDate", "Start date"),
+    optionalDate("endDate", "End date"),
     body("isActive").optional().isBoolean().toBoolean(),
   ];
 };

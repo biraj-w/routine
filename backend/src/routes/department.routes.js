@@ -25,10 +25,20 @@ const { PERMISSIONS: P } = require("../config/permissions");
 const router = express.Router();
 router.use(authenticate);
 
+/**
+ * `field: "_id"` — NOT the default "department".
+ *
+ * A Department IS the department, so it has no `department` path. The default
+ * produced `find({ department: <id> })`, and because config/db.js sets
+ * `strictQuery: true` Mongoose STRIPPED that unknown path instead of erroring —
+ * so scoping silently became a no-op and a Department Admin listed every
+ * department. A scope filter that quietly does nothing is worse than one that
+ * throws. The /:id routes below already got this right.
+ */
 router.get(
   "/",
   authorize(P.VIEW_DEPARTMENTS),
-  withScope(),
+  withScope({ field: "_id" }),
   validate(validator.list),
   controller.list
 );

@@ -171,8 +171,11 @@
                 );
               });
             })
-            .catch(() => {
-              /* a filter that cannot load simply stays at "All" */
+            .catch((err) => {
+              // A filter that cannot load stays at "All" — but it says so. This
+              // was silent, which is how a 422 on every options request went
+              // unnoticed while every dropdown in the app sat empty.
+              console.warn(`Filter "${filter.key}": could not load ${filter.resource} — ${err.message}`);
             });
         }
 
@@ -358,7 +361,10 @@
           try {
             const options = await loadOptions(field.resource, { query: field.query });
             return { ...field, options };
-          } catch {
+          } catch (err) {
+            // An empty <select> with no explanation is the hardest kind of bug to
+            // report ("the department isn't showing"), so say what failed.
+            console.warn(`Field "${field.name}": could not load ${field.resource} options — ${err.message}`);
             return { ...field, options: [] };
           }
         })

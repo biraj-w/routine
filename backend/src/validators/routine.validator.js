@@ -2,7 +2,7 @@
  * Routine validation chains.
  */
 const { body, param, query } = require("express-validator");
-const { existsAndActive, paginationQuery, objectIdParam } = require("./common.validator");
+const { existsAndActive, optionalDate, paginationQuery, objectIdParam } = require("./common.validator");
 const { DAYS, CLASS_TYPES } = require("../config/constants");
 
 exports.list = paginationQuery;
@@ -15,15 +15,13 @@ exports.create = [
     .custom(existsAndActive("Semester")),
   body("title").optional().trim().isLength({ max: 150 })
     .withMessage("Title must be at most 150 characters"),
-  body("effectiveFrom").optional({ nullable: true }).isISO8601()
-    .withMessage("Effective date must be a valid date").toDate(),
+  optionalDate("effectiveFrom", "Effective date"),
 ];
 
 exports.update = [
   body("title").optional().trim().isLength({ min: 1, max: 150 })
     .withMessage("Title must be between 1 and 150 characters"),
-  body("effectiveFrom").optional({ nullable: true }).isISO8601()
-    .withMessage("Effective date must be a valid date").toDate(),
+  optionalDate("effectiveFrom", "Effective date"),
 ];
 
 /**

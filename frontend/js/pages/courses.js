@@ -44,6 +44,7 @@ Crud.createPage({
     { name: "credits", label: "Credit hours", type: "number", min: 0, max: 6, step: 0.5, required: true },
     { name: "type", label: "Type", type: "select", options: ["Theory", "Lab", "Project"], default: "Theory" },
     { name: "weeklyClasses", label: "Classes per week", type: "number", min: 1, max: 10, default: 3 },
+    { name: "description", label: "Description", type: "textarea", wide: true, help: "Optional. At most 500 characters." },
     { name: "isActive", label: "Active", type: "checkbox", default: true },
   ],
   toFormValues: (row) => ({ ...row, department: Fmt.idOf(row.department) }),

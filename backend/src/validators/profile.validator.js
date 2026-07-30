@@ -3,7 +3,7 @@
  * with optional account-creation fields.
  */
 const { body } = require("express-validator");
-const { optionalRef, paginationQuery, existsAndActive } = require("./common.validator");
+const { optionalRef, optionalDate, paginationQuery, existsAndActive } = require("./common.validator");
 const { DESIGNATIONS, DAYS } = require("../config/constants");
 
 /* ── Teacher ─────────────────────────────────────────────────────────────── */
@@ -75,8 +75,7 @@ const studentFields = (optional) => {
       .withMessage("Group label must be at most 5 characters"),
     body("batchYear").optional({ nullable: true }).isInt({ min: 1900, max: 2200 })
       .withMessage("Batch year is out of range").toInt(),
-    body("admissionDate").optional({ nullable: true }).isISO8601()
-      .withMessage("Admission date must be a valid date").toDate(),
+    optionalDate("admissionDate", "Admission date"),
     body("contactPhone").optional().trim().isLength({ max: 20 }),
     body("status").optional().isIn(["active", "graduated", "suspended", "inactive"])
       .withMessage("Status must be active, graduated, suspended or inactive"),

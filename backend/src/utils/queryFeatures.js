@@ -19,7 +19,21 @@
  */
 
 const DEFAULT_LIMIT = 10;
-const MAX_LIMIT = 100;
+
+/**
+ * Upper bound on `?limit=`.
+ *
+ * 200 rather than 100 because reference dropdowns fetch their whole option list
+ * in one call (frontend/js/core/crud.js loadOptions, plus the routine builder,
+ * reports and search pages) — a paginated <select> is not a thing. 100 made
+ * every one of those requests fail.
+ *
+ * validators/common.validator.js derives its bound from this constant rather
+ * than repeating the number: the two layers disagreeing is what caused the
+ * failure in the first place. buildListQuery() clamps, the validator rejects, so
+ * they MUST agree.
+ */
+const MAX_LIMIT = 200;
 
 /** Neutralise every regex metacharacter in user input. */
 function escapeRegex(str) {
@@ -80,6 +94,51 @@ function buildListQuery(req, {
   return { filter, sort, skip: (page - 1) * limit, limit, page };
 }
 
+/** Virtuals that must never be serialised, whatever a schema declares. */
+const VIRTUAL_DENYLIST = new Set([
+  "id", // utils/response.js withIds() already sets this
+  "password", // a setter-only virtual on User; must not leave the API
+]);
+
+/**
+ * Attach a model's virtual getters to plain objects from a `.lean()` query.
+ *
+ * ── Why this is needed ─────────────────────────────────────────────────────
+ * The toJSON plugin sets `virtuals: true`, so a Mongoose DOCUMENT serialises
+ * with its virtuals. `.lean()` returns plain driver objects and skips that
+ * entirely — so `GET /semesters/:id` returned `label` while `GET /semesters`
+ * did not. Every reference dropdown reads its option text from a LIST call, so
+ * `labelKey: "label"` rendered "—" for Semester, Course, Room, Teacher and
+ * Student (each of which defines `label` as a virtual). TimeSlot was unaffected
+ * only because its `label` is a real field.
+ *
+ * This is the same lean-vs-document asymmetry that withIds() exists to paper
+ * over for `id`; virtuals need the model, so they are resolved here where it is
+ * in scope rather than in the response envelope.
+ *
+ * A getter that throws must not take the whole list down with it — a missing
+ * label is a cosmetic problem, a 500 is not.
+ */
+function applyVirtuals(Model, docs) {
+  const virtuals = Object.entries(Model.schema.virtuals).filter(
+    ([name, v]) => !VIRTUAL_DENYLIST.has(name) && typeof v.getters?.[0] === "function"
+  );
+  if (!virtuals.length) return docs;
+
+  for (const doc of docs) {
+    if (!doc || typeof doc !== "object") continue;
+    for (const [name, virtual] of virtuals) {
+      if (doc[name] !== undefined) continue; // a real field of the same name wins
+      try {
+        doc[name] = virtual.applyGetters(undefined, doc);
+      } catch {
+        /* leave it absent */
+      }
+    }
+  }
+  return docs;
+}
+
 /**
  * Run a paginated find plus its matching count.
  *
@@ -92,7 +151,8 @@ async function paginate(Model, filter, { sort, skip, limit, page, populate = [],
   for (const p of populate) query.populate(p);
 
   const [items, total] = await Promise.all([query, Model.countDocuments(filter)]);
-  return { items, meta: { page, limit, total } };
+  // Virtuals restored so a list row carries the same fields as a detail read.
+  return { items: applyVirtuals(Model, items), meta: { page, limit, total } };
 }
 
-module.exports = { buildListQuery, paginate, escapeRegex, DEFAULT_LIMIT, MAX_LIMIT };
+module.exports = { buildListQuery, paginate, applyVirtuals, escapeRegex, DEFAULT_LIMIT, MAX_LIMIT };

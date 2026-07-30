@@ -61,6 +61,7 @@ Crud.createPage({
     { name: "section", label: "Section", type: "text", required: true, default: "A" },
     { name: "groupLabel", label: "Lab group", type: "text", default: "ALL", help: 'ALL, or G1/G2 for a split lab batch.' },
     { name: "batchYear", label: "Batch year", type: "number", min: 1900, max: 2200 },
+    { name: "admissionDate", label: "Admission date", type: "date" },
     { name: "status", label: "Status", type: "select", options: ["active", "graduated", "suspended", "inactive"], default: "active" },
     { name: "contactPhone", label: "Phone", type: "tel" },
     {

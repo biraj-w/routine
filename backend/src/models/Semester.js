@@ -95,9 +95,22 @@ semesterSchema.pre("validate", function deriveFields(next) {
   next();
 });
 
-/** Human label used in dropdowns and reports. */
+/**
+ * Human label used in dropdowns and reports.
+ *
+ * The department code is prefixed WHEN AVAILABLE, because a semester is only
+ * unique per department: without it a Super Admin picking a semester in the
+ * routine form saw three identical "Semester 1 — Spring 2025-2026" options, one
+ * per department, with no way to tell them apart.
+ *
+ * `this.department?.code` is present only when the caller populated it (the list
+ * and detail endpoints both do). When it is a bare ObjectId the prefix is simply
+ * omitted rather than rendering an id, so the virtual is safe either way.
+ */
 semesterSchema.virtual("label").get(function label() {
-  return `Semester ${this.number} — ${this.term} ${this.academicYear}`;
+  const base = `Semester ${this.number} — ${this.term} ${this.academicYear}`;
+  const code = this.department?.code;
+  return code ? `${code} · ${base}` : base;
 });
 
 module.exports = model("Semester", semesterSchema);

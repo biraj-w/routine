@@ -10,7 +10,6 @@ const departmentSchema = new Schema(
     name: {
       type: String,
       required: [true, "Department name is required"],
-      unique: true,
       trim: true,
       minlength: [2, "Department name must be at least 2 characters"],
       maxlength: [120, "Department name must be at most 120 characters"],
@@ -19,7 +18,6 @@ const departmentSchema = new Schema(
     code: {
       type: String,
       required: [true, "Department code is required"],
-      unique: true,
       uppercase: true,
       trim: true,
       minlength: [2, "Department code must be at least 2 characters"],
@@ -41,5 +39,22 @@ const departmentSchema = new Schema(
 );
 
 applyCommonPlugins(departmentSchema);
+
+/**
+ * Uniqueness is PARTIAL, scoped to live rows.
+ *
+ * A plain `unique: true` on the field would keep enforcing itself against
+ * soft-deleted documents, so deleting a department would permanently reserve its
+ * code — an institution could never recreate "CSE" after removing it, and
+ * nothing in the interface could release it. Scoping the index to
+ * `isDeleted: false` makes a soft delete behave like a delete from the caller's
+ * point of view while still retaining the row for audit purposes.
+ *
+ * The same reasoning applies to every soft-deletable natural key in this project.
+ */
+const LIVE_ONLY = { partialFilterExpression: { isDeleted: false } };
+
+departmentSchema.index({ code: 1 }, { unique: true, ...LIVE_ONLY, name: "uniq_department_code" });
+departmentSchema.index({ name: 1 }, { unique: true, ...LIVE_ONLY, name: "uniq_department_name" });
 
 module.exports = model("Department", departmentSchema);

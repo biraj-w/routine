@@ -39,7 +39,6 @@ const teacherSchema = new Schema(
     employeeCode: {
       type: String,
       required: [true, "Employee code is required"],
-      unique: true,
       uppercase: true,
       trim: true,
       maxlength: [20, "Employee code must be at most 20 characters"],
@@ -116,6 +115,11 @@ teacherSchema.index(
     partialFilterExpression: { user: { $type: "objectId" } },
     name: "uniq_teacher_user",
   }
+);
+// Partial, so a soft-deleted teacher releases their employee code.
+teacherSchema.index(
+  { employeeCode: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_teacher_code" }
 );
 teacherSchema.index({ department: 1, isDeleted: 1 });
 teacherSchema.index({ fullName: "text", employeeCode: "text" }, { name: "text_teacher_search" });

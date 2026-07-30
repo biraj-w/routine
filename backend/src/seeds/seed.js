@@ -401,6 +401,10 @@ async function seedUsersAndProfiles(roles, departments, semesters) {
           groupLabel: s.group || DEFAULT_GROUP_LABEL,
           batchYear: 2023,
           status: "active",
+          // Links the profile to its login account. Without this the student's
+          // own routine and report cannot be resolved from their token, because
+          // both look the profile up by `user`.
+          user: userId,
         },
       }
     );

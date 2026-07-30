@@ -33,7 +33,6 @@ const timeSlotSchema = new Schema(
     label: {
       type: String,
       required: [true, "Slot label is required"],
-      unique: true,
       trim: true,
     },
 
@@ -70,6 +69,10 @@ const timeSlotSchema = new Schema(
 
 applyCommonPlugins(timeSlotSchema);
 
+timeSlotSchema.index(
+  { label: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_timeslot_label" }
+);
 timeSlotSchema.index(
   { order: 1 },
   { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_timeslot_order" }

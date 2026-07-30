@@ -35,7 +35,6 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
       lowercase: true,
       trim: true,
       match: [EMAIL_PATTERN, "Please provide a valid email address"],
@@ -90,6 +89,21 @@ const userSchema = new Schema(
 );
 
 applyCommonPlugins(userSchema);
+
+/**
+ * Email uniqueness is PARTIAL, scoped to live accounts.
+ *
+ * A soft-deleted account must not permanently reserve its address: staff leave
+ * and are re-hired, and an administrator who deletes an account by mistake has to
+ * be able to recreate it. Because the softDelete plugin's query hook excludes
+ * deleted rows, `User.findOne({ email })` during login can only ever match the
+ * live account, so there is no ambiguity. The deleted row keeps its own identity
+ * for the audit trail.
+ */
+userSchema.index(
+  { email: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_user_email" }
+);
 
 userSchema.index({ department: 1, status: 1 });
 

@@ -21,7 +21,6 @@ const studentSchema = new Schema(
     rollNo: {
       type: String,
       required: [true, "Roll number is required"],
-      unique: true,
       uppercase: true,
       trim: true,
       maxlength: [25, "Roll number must be at most 25 characters"],
@@ -104,6 +103,12 @@ studentSchema.index(
     partialFilterExpression: { user: { $type: "objectId" } },
     name: "uniq_student_user",
   }
+);
+
+// Partial, so a soft-deleted student releases their roll number.
+studentSchema.index(
+  { rollNo: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_student_roll" }
 );
 
 /** Serves "my routine": resolve the student, then read their section's entries. */

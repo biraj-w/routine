@@ -19,7 +19,6 @@ const roomSchema = new Schema(
     code: {
       type: String,
       required: [true, "Room code is required"],
-      unique: true,
       uppercase: true,
       trim: true,
       maxlength: [20, "Room code must be at most 20 characters"],
@@ -67,6 +66,11 @@ const roomSchema = new Schema(
 
 applyCommonPlugins(roomSchema);
 
+// Partial, so a soft-deleted room releases its code. See Department for why.
+roomSchema.index(
+  { code: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false }, name: "uniq_room_code" }
+);
 roomSchema.index({ department: 1, type: 1 });
 roomSchema.index({ building: 1, code: 1 });
 

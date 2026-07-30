@@ -1,37 +1,41 @@
 {
-  "name": "daily-routine-backend",
+  "name": "routine-management-backend",
   "version": "1.0.0",
-  "description": "Backend API for Student Daily Routine System",
-  "main": "src/index.js",
+  "description": "University Routine Management System — Express + MongoDB REST API with JWT auth and permission-based RBAC",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/index.js",
-    "lint": "echo \"Add ESLint later\""
+    "dev": "nodemon src/server.js",
+    "seed": "node src/seeds/seed.js",
+    "seed:fresh": "node src/seeds/seed.js --fresh"
   },
   "keywords": [
     "node",
     "express",
-    "sequelize",
-    "mysql",
-    "authentication",
+    "mongodb",
+    "mongoose",
     "jwt",
-    "student-routine"
+    "rbac",
+    "mvc",
+    "routine-management"
   ],
-  "author": "Abhigna Sharma",
   "license": "ISC",
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.2.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.16.2",
-    "sequelize": "^6.37.7"
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.9"
   }
 }

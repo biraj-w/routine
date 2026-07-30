@@ -118,6 +118,31 @@ function enforceScope(Model, {
   });
 }
 
+/**
+ * Load a document by id WITHOUT any scope check, attaching it to `req.doc`.
+ *
+ * The unscoped sibling of enforceScope, for institution-wide resources such as
+ * rooms and time slots. A department admin legitimately needs to read every
+ * room — they have to see the shared lecture halls in order to book one — so
+ * applying a department check there would be wrong, not merely strict. Write
+ * access to those resources is restricted by permission instead: only Super
+ * Admin holds "Manage Rooms".
+ */
+function loadDoc(Model, { param = "id", attachAs = "doc" } = {}) {
+  return asyncHandler(async (req, res, next) => {
+    const id = req.params[param];
+    if (!mongoose.isValidObjectId(id)) {
+      throw ApiError.badRequest(`"${id}" is not a valid id`, "INVALID_ID");
+    }
+
+    const doc = await Model.findById(id);
+    if (!doc) throw ApiError.notFound(`${Model.modelName} not found`);
+
+    req[attachAs] = doc;
+    next();
+  });
+}
+
 /* ────────────────────────────────────────────────────────────────────────────
  * 3. injectScope — force the department on writes
  * ──────────────────────────────────────────────────────────────────────────── */
@@ -222,6 +247,7 @@ function scoped(req, filter = {}) {
 module.exports = {
   withScope,
   enforceScope,
+  loadDoc,
   injectScope,
   assertReferencesInScope,
   isGlobalScope,

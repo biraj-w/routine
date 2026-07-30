@@ -15,6 +15,19 @@ const router = express.Router();
 /* ── Feature routers ─────────────────────────────────────────────────────── */
 router.use("/auth", require("./auth.routes"));
 
+// Administration
+router.use("/users", require("./user.routes"));
+router.use("/roles", require("./role.routes"));
+
+// Master data
+router.use("/departments", require("./department.routes"));
+router.use("/semesters", require("./semester.routes"));
+router.use("/courses", require("./course.routes"));
+router.use("/teachers", require("./teacher.routes"));
+router.use("/students", require("./student.routes"));
+router.use("/rooms", require("./room.routes"));
+router.use("/timeslots", require("./timeslot.routes"));
+
 /**
  * GET /api/health
  * Liveness plus database reachability, in the standard envelope.

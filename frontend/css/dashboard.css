@@ -1,0 +1,256 @@
+/* ============================================================================
+   Dashboard: stat tiles, today's schedule, workload bars, heat map.
+   ========================================================================== */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.stat-tile {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label {
+  display: block;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-muted);
+  font-weight: 600;
+}
+
+.stat-value {
+  display: block;
+  font-size: var(--fs-2xl);
+  font-weight: 650;
+  line-height: 1.2;
+  margin-top: var(--sp-1);
+  /* Tabular figures stop the numbers jittering as they change width. */
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-hint {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--c-text-subtle);
+  margin-top: var(--sp-1);
+}
+
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
+
+/* ── Today's schedule ────────────────────────────────────────────────────── */
+
+.schedule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+  font-size: var(--fs-sm);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-item.is-upcoming {
+  background: var(--c-primary-light);
+}
+
+.schedule-time {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+  white-space: nowrap;
+  min-width: 6.5rem;
+}
+
+.schedule-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.schedule-course {
+  font-weight: 600;
+}
+
+.schedule-meta {
+  display: block;
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Workload / utilisation bars ─────────────────────────────────────────── */
+
+.bar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bar-row {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.bar-row:last-child {
+  border-bottom: none;
+}
+
+.bar-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-1);
+}
+
+.bar-name {
+  font-weight: 550;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-value {
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar-track {
+  height: 6px;
+  background: var(--c-surface-alt);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--c-primary);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* Over capacity: the bar itself carries the warning. */
+.bar-fill.is-over {
+  background: var(--c-danger);
+}
+
+.bar-fill.is-high {
+  background: var(--c-warning);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-fill { transition: none; }
+}
+
+/* ── Slot density heat map ───────────────────────────────────────────────── */
+
+.heatmap {
+  overflow-x: auto;
+}
+
+.heatmap table {
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+  width: 100%;
+}
+
+.heatmap th,
+.heatmap td {
+  border: 1px solid var(--c-border);
+  padding: var(--sp-2);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.heatmap th {
+  background: var(--c-surface-alt);
+  color: var(--c-text-muted);
+  font-weight: 650;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.heatmap th.heat-day {
+  text-align: left;
+}
+
+.heat-cell {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+/* Five steps rather than a computed gradient: discrete bands are easier to read
+   than a continuous scale at this size. */
+.heat-0 { background: var(--c-surface); color: var(--c-text-subtle); }
+.heat-1 { background: #e7ecfd; }
+.heat-2 { background: #c8d3fa; }
+.heat-3 { background: #a3b4f5; }
+.heat-4 { background: #7b90ef; color: #fff; }
+
+/* ── Lifecycle status strip ──────────────────────────────────────────────── */
+
+.status-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  margin-bottom: var(--sp-4);
+}
+
+.status-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--c-text-subtle);
+}
+
+.status-step.is-done {
+  color: var(--c-success);
+  font-weight: 600;
+}
+
+.status-step.is-current {
+  color: var(--c-primary);
+  font-weight: 700;
+}
+
+.status-arrow {
+  color: var(--c-border-strong);
+}
+
+.status-meta {
+  margin-left: auto;
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}

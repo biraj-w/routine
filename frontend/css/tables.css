@@ -1,0 +1,303 @@
+/* ============================================================================
+   Data tables and the weekly routine grid.
+   ========================================================================== */
+
+.table-host {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* Wide tables scroll inside their own container rather than forcing the whole
+   page sideways. */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: middle;
+}
+
+.data-table thead th {
+  background: var(--c-surface-alt);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-text-muted);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background: var(--c-surface-alt);
+}
+
+.sort-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.sort-button:hover {
+  color: var(--c-primary);
+}
+
+.row-actions {
+  display: flex;
+  gap: var(--sp-1);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.data-table td.align-right { text-align: right; }
+.data-table td.align-center { text-align: center; }
+
+/* ── Weekly routine grid ─────────────────────────────────────────────────── */
+
+.grid-scroll {
+  overflow-x: auto;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.routine-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+  min-width: 760px; /* below this the cells stop being readable, so scroll */
+}
+
+.routine-grid th,
+.routine-grid td {
+  border: 1px solid var(--c-border);
+  padding: 0;
+}
+
+.grid-corner,
+.grid-slot,
+.grid-day {
+  background: var(--c-surface-alt);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+  color: var(--c-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.grid-slot {
+  text-align: center;
+  min-width: 108px;
+}
+
+.grid-slot .slot-label {
+  display: block;
+  white-space: nowrap;
+}
+
+.grid-slot small {
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--c-text-subtle);
+}
+
+.grid-day {
+  text-align: left;
+  white-space: nowrap;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.grid-cell {
+  padding: 3px;
+  vertical-align: top;
+  min-width: 108px;
+  height: 62px;
+  position: relative;
+}
+
+.grid-cell.is-break {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--c-surface-alt),
+    var(--c-surface-alt) 6px,
+    #fff 6px,
+    #fff 12px
+  );
+}
+
+/* A cell holding two entries whose lab groups do NOT differ is a genuine
+   double-booking, and must look like a problem. */
+.grid-cell.has-conflict {
+  background: var(--c-danger-bg);
+  box-shadow: inset 0 0 0 2px var(--c-danger);
+}
+
+.conflict-flag {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: 0.7rem;
+  color: var(--c-danger);
+  z-index: 2;
+}
+
+.grid-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  border: none;
+  border-left: 3px solid var(--c-primary);
+  border-radius: 3px;
+  background: var(--c-primary-light);
+  text-align: left;
+  font-family: inherit;
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+  color: var(--c-text);
+}
+
+.grid-card + .grid-card {
+  margin-top: 3px;
+}
+
+.grid-card.is-clickable {
+  cursor: pointer;
+}
+
+.grid-card.is-clickable:hover {
+  filter: brightness(0.96);
+}
+
+.card-code {
+  font-weight: 700;
+}
+
+.card-teacher,
+.card-room {
+  color: var(--c-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-group {
+  align-self: flex-start;
+  margin-top: 1px;
+  padding: 0 0.25rem;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.07);
+  font-weight: 600;
+  font-size: 0.65rem;
+}
+
+/* Class-type shading, keyed to the legend. */
+.grid-card.type-lecture  { border-left-color: var(--c-primary); background: var(--c-primary-light); }
+.grid-card.type-lab      { border-left-color: var(--c-success); background: var(--c-success-bg); }
+.grid-card.type-tutorial { border-left-color: var(--c-warning); background: var(--c-warning-bg); }
+
+.cell-add {
+  width: 100%;
+  height: 100%;
+  min-height: 54px;
+  border: 1px dashed var(--c-border-strong);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--c-text-subtle);
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+/* The "+" only appears on hover, so an empty grid is not a wall of plus signs. */
+.grid-cell:hover .cell-add,
+.cell-add:focus-visible {
+  opacity: 1;
+}
+
+.cell-add:hover {
+  border-color: var(--c-primary);
+  color: var(--c-primary);
+  background: var(--c-primary-light);
+}
+
+.grid-legend {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--c-text-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border-left: 3px solid;
+  display: inline-block;
+}
+
+.swatch.type-lecture  { border-left-color: var(--c-primary); background: var(--c-primary-light); }
+.swatch.type-lab      { border-left-color: var(--c-success); background: var(--c-success-bg); }
+.swatch.type-tutorial { border-left-color: var(--c-warning); background: var(--c-warning-bg); }
+.swatch.is-conflict-swatch { border-left-color: var(--c-danger); background: var(--c-danger-bg); }
+
+/* Printed grids need borders that survive without background printing. */
+@media print {
+  .routine-grid {
+    min-width: 0;
+    font-size: 8pt;
+  }
+
+  .grid-scroll {
+    overflow: visible;
+    border: none;
+  }
+
+  .grid-card {
+    border: 1px solid #999;
+    border-left-width: 3px;
+    background: #fff !important;
+  }
+
+  .cell-add {
+    display: none;
+  }
+}

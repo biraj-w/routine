@@ -1,0 +1,258 @@
+/* ============================================================================
+   Forms: inputs, labels, field errors, and the centred auth card.
+   ========================================================================== */
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+
+/* A single-column form for narrow modals and the auth pages. */
+.form.single {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+/* Fields that need the full width of a multi-column grid. */
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  color: var(--c-text);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="search"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+  background: var(--c-surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--c-primary);
+  box-shadow: 0 0 0 3px var(--c-primary-light);
+}
+
+.form-group input:read-only {
+  background: var(--c-surface-alt);
+  color: var(--c-text-muted);
+}
+
+/* Set by UI.showFieldErrors when the server rejects a specific field. */
+.form-group input.is-invalid,
+.form-group select.is-invalid,
+.form-group textarea.is-invalid {
+  border-color: var(--c-danger);
+  background: var(--c-danger-bg);
+}
+
+.form-group input.is-invalid:focus,
+.form-group select.is-invalid:focus,
+.form-group textarea.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(201, 42, 42, 0.12);
+}
+
+.field-error {
+  color: var(--c-danger);
+  font-size: var(--fs-xs);
+  min-height: 1em; /* reserve the line so filling it does not shift the layout */
+}
+
+.form-help {
+  color: var(--c-text-muted);
+  font-size: var(--fs-xs);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  padding-top: var(--sp-4);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--c-primary);
+  cursor: pointer;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding-top: var(--sp-2);
+}
+
+/* A read-only key/value display, used on profile and detail views. */
+.detail-list {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr;
+  gap: var(--sp-2) var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+.detail-list dt {
+  color: var(--c-text-muted);
+  font-weight: 500;
+}
+
+.detail-list dd {
+  margin: 0;
+}
+
+/* ── Auth pages ──────────────────────────────────────────────────────────── */
+
+body.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--sp-4);
+  /* A subtle wash rather than flat grey, so the login screen does not look
+     unfinished. */
+  background:
+    radial-gradient(1100px 480px at 15% -10%, #e8ecfb 0%, transparent 60%),
+    radial-gradient(900px 420px at 100% 110%, #e6f1fb 0%, transparent 55%),
+    var(--c-bg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--sp-6);
+}
+
+.auth-card.wide {
+  max-width: 560px;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+.auth-brand-mark {
+  font-size: 1.75rem;
+  color: var(--c-primary);
+  line-height: 1;
+}
+
+.auth-title {
+  font-size: var(--fs-xl);
+  font-weight: 650;
+}
+
+.auth-subtitle {
+  color: var(--c-text-muted);
+  font-size: var(--fs-sm);
+  margin-top: var(--sp-1);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+}
+
+.auth-footer {
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--c-border);
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  text-align: center;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  flex-wrap: wrap;
+}
+
+/* Seeded demo credentials, shown on the login page so a marker can sign in
+   without hunting through the README. */
+.demo-credentials {
+  margin-top: var(--sp-5);
+  border: 1px dashed var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  background: var(--c-surface-alt);
+}
+
+.demo-credentials summary {
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+.demo-table {
+  width: 100%;
+  margin-top: var(--sp-3);
+  border-collapse: collapse;
+  font-size: var(--fs-xs);
+}
+
+.demo-table th,
+.demo-table td {
+  text-align: left;
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.demo-table tbody tr {
+  cursor: pointer;
+}
+
+.demo-table tbody tr:hover {
+  background: var(--c-primary-light);
+}
+
+.demo-table code {
+  font-family: var(--font-mono);
+}

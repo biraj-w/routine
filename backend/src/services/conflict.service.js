@@ -2,7 +2,7 @@
  * Conflict detection — the business logic that makes this more than CRUD.
  *
  * ── Why a service, not a Mongoose hook ─────────────────────────────────────
- * A pre('save') hook cannot do this job:
+ * A pre('save') hook cannot do this job:/b
  *   - On update it has no clean way to exclude the document being edited, so an
  *     entry would conflict with itself.
  *   - It cannot run for a dry-run preview, which the UI needs in order to warn

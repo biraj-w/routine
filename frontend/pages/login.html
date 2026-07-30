@@ -1,1 +1,96 @@
-<h1>Placeholder</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in · Routine Management</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/forms.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-card">
+      <div class="auth-brand">
+        <span class="auth-brand-mark" aria-hidden="true">◴</span>
+        <div>
+          <h1 class="auth-title">Sign in</h1>
+          <p class="auth-subtitle">University Routine Management System</p>
+        </div>
+      </div>
+
+      <div id="alert-host"></div>
+
+      <form id="login-form" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            required
+            placeholder="you@univ.edu"
+          />
+          <small class="field-error" data-error-for="email"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          <small class="field-error" data-error-for="password"></small>
+        </div>
+
+        <button id="submit" class="btn primary block" type="submit">Sign in</button>
+
+        <div class="auth-links">
+          <a href="forgot-password.html">Forgot your password?</a>
+          <a href="register.html">Create a student account</a>
+        </div>
+      </form>
+
+      <!-- Seeded demo accounts, so the project can be assessed without hunting
+           through the README. Clicking a row fills the form. -->
+      <details class="demo-credentials">
+        <summary>Demo accounts</summary>
+        <table class="demo-table">
+          <thead>
+            <tr><th>Role</th><th>Email</th><th>Password</th></tr>
+          </thead>
+          <tbody id="demo-rows">
+            <tr data-email="superadmin@univ.edu" data-password="Admin@123">
+              <td>Super Admin</td><td><code>superadmin@univ.edu</code></td><td><code>Admin@123</code></td>
+            </tr>
+            <tr data-email="cse.admin@univ.edu" data-password="Dept@123">
+              <td>Dept Admin (CSE)</td><td><code>cse.admin@univ.edu</code></td><td><code>Dept@123</code></td>
+            </tr>
+            <tr data-email="eee.admin@univ.edu" data-password="Dept@123">
+              <td>Dept Admin (EEE)</td><td><code>eee.admin@univ.edu</code></td><td><code>Dept@123</code></td>
+            </tr>
+            <tr data-email="rita.sharma@univ.edu" data-password="Teach@123">
+              <td>Teacher</td><td><code>rita.sharma@univ.edu</code></td><td><code>Teach@123</code></td>
+            </tr>
+            <tr data-email="asha.rai@student.univ.edu" data-password="Stud@123">
+              <td>Student</td><td><code>asha.rai@student.univ.edu</code></td><td><code>Stud@123</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+    </main>
+
+    <!-- Classic scripts, loaded in dependency order. No bundler: each file
+         attaches one global (Api, Auth, UI, Fmt), which is the simplest thing
+         that works without a build step. -->
+    <script src="../js/config/permissions.js"></script>
+    <script src="../js/core/format.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/ui.js"></script>
+    <script src="../js/pages/login.js"></script>
+  </body>
+</html>
